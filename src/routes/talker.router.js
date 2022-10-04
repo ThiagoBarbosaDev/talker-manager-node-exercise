@@ -6,7 +6,7 @@ const {
   validateTalk,
   validateWatchedAt,
   validateRate } = require('../middlewares/talkerMiddlewares');
-const { readJson, addEntryToJson, updateJsonEntry } = require('../utils/fs');
+const { readJson, addEntryToJson, updateJsonEntry, deleteJsonEntry } = require('../utils/fs');
 
 const router = express.Router();
 
@@ -58,6 +58,17 @@ router.put(
   const { id } = req.params;
   const newData = await updateJsonEntry(data, id);
   res.status(200).json(newData);
+},
+);
+
+router.delete(
+  '/:id',
+  validateToken,
+  async (req, res) => {
+  const { id } = req.params;
+  await deleteJsonEntry(id);
+
+  res.status(204).end();
 },
 );
 

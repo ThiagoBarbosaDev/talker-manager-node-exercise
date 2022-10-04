@@ -11,11 +11,14 @@ const readJson = async () => {
 const addEntryToJson = async (payload) => {
   const data = await readJson();
 
-  const lastId = data.at(-1).id;
+  const lastId = data.length;
   const id = lastId + 1;
   const payloadWithId = { id, ...payload };
+  // data.push(payloadWithId);
   const appendedData = [...data, payloadWithId];
 
+  // await fs.writeFile(fullpath, JSON.stringify(data));
+  console.log(appendedData);
   await fs.writeFile(fullpath, JSON.stringify(appendedData));
 
   return payloadWithId;
@@ -35,4 +38,11 @@ const updateJsonEntry = async (payload, paramId) => {
   return newPayload;
 };
 
-module.exports = { readJson, addEntryToJson, updateJsonEntry };
+const deleteJsonEntry = async (paramId) => {
+  const data = await readJson();
+  const filteredData = data.filter((item) => item.id !== +paramId);
+  console.log(filteredData);
+  await fs.writeFile(fullpath, JSON.stringify(filteredData));
+};
+
+module.exports = { readJson, addEntryToJson, updateJsonEntry, deleteJsonEntry };
