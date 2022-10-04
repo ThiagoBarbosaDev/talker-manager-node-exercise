@@ -6,7 +6,7 @@ const {
   validateTalk,
   validateWatchedAt,
   validateRate } = require('../middlewares/talkerMiddlewares');
-const { readJson, addEntryToJson } = require('../utils/fs');
+const { readJson, addEntryToJson, updateJsonEntry } = require('../utils/fs');
 
 const router = express.Router();
 
@@ -42,6 +42,22 @@ router.post(
   const data = req.body;
   const newData = await addEntryToJson(data);
   res.status(201).json(newData);
+},
+);
+
+router.put(
+  '/:id',
+  validateToken,
+  validateName,
+  validateAge,
+  validateTalk,
+  validateWatchedAt,
+  validateRate,
+  async (req, res) => {
+  const data = req.body;
+  const { id } = req.params;
+  const newData = await updateJsonEntry(data, id);
+  res.status(200).json(newData);
 },
 );
 

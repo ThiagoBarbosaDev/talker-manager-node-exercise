@@ -21,4 +21,18 @@ const addEntryToJson = async (payload) => {
   return payloadWithId;
 };
 
-module.exports = { readJson, addEntryToJson };
+const updateJsonEntry = async (payload, paramId) => {
+  const data = await readJson();
+  const filteredData = data.filter((item) => item.id !== +paramId);
+  const unfilteredData = data.filter((item) => item.id === +paramId);
+  const { id } = unfilteredData[0];
+  const newPayload = { id, ...payload };
+
+  const newData = [...filteredData, newPayload];
+  const sortedData = newData.sort((a, b) => a.id - b.id);
+
+  await fs.writeFile(fullpath, JSON.stringify(sortedData));
+  return newPayload;
+};
+
+module.exports = { readJson, addEntryToJson, updateJsonEntry };

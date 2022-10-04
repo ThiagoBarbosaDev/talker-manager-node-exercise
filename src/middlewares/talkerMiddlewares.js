@@ -90,10 +90,15 @@ const INVALID_RATE_ERROR = {
   message: 'O campo "rate" deve ser um inteiro de 1 à 5',
 };
 
+const rateExistsAndIsNotZero = (rate) => {
+  console.log(rate);
+  return !rate && rate !== 0;
+};
+
 const validateRate = (req, res, next) => {
   const { rate } = req.body.talk;
 
-  if (!rate) { return res.status(400).json(RATE_NOT_FOUND_ERROR); }
+  if (rateExistsAndIsNotZero(rate)) { return res.status(400).json(RATE_NOT_FOUND_ERROR); }
 
   const minRate = 1;
   const maxRate = 5;
