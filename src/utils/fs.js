@@ -14,12 +14,13 @@ const addEntryToJson = async (payload) => {
   const lastId = data.length;
   const id = lastId + 1;
   const payloadWithId = { id, ...payload };
-  // data.push(payloadWithId);
-  const appendedData = [...data, payloadWithId];
 
-  // await fs.writeFile(fullpath, JSON.stringify(data));
-  console.log(appendedData);
-  await fs.writeFile(fullpath, JSON.stringify(appendedData));
+  // NÃO PASSA COM SPREAD, SÓ COM PUSH
+  data.push(payloadWithId);
+  // const appendedData = [...data, payloadWithId];
+
+  await fs.writeFile(fullpath, JSON.stringify(data));
+  // await fs.writeFile(fullpath, JSON.stringify(appendedData));
 
   return payloadWithId;
 };
