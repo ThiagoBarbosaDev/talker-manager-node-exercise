@@ -1,5 +1,12 @@
 const express = require('express');
-const { readJson } = require('../utils/fs');
+const { 
+  validateToken,
+  validateName,
+  validateAge,
+  validateTalk,
+  validateWatchedAt,
+  validateRate } = require('../middlewares/talkerMiddlewares');
+const { readJson, addEntryToJson } = require('../utils/fs');
 
 const router = express.Router();
 
@@ -22,5 +29,20 @@ router.get('/:id', async (req, res) => {
   if (!person) { return res.status(404).json(errorMsg); }
   res.status(200).json(person);
 });
+
+router.post(
+  '/',
+  validateToken,
+  validateName,
+  validateAge,
+  validateTalk,
+  validateWatchedAt,
+  validateRate,
+  async (req, res) => {
+  const data = req.body;
+  const newData = await addEntryToJson(data);
+  res.status(201).json(newData);
+},
+);
 
 module.exports = router;
