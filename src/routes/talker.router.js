@@ -16,6 +16,18 @@ router.get('/', async (req, res) => {
   res.status(200).json(data);
 });
 
+router.get('/search', validateToken, async (req, res) => {
+  const { q: query } = req.query;
+  const data = await readJson();
+
+  if (!query) { return res.status(200).json(data); }
+
+  const talker = data.filter((person) => person.name.includes(query));
+  if (!talker) { return res.status(200).json([]); }
+
+  res.status(200).json(talker);
+});
+
 router.get('/:id', async (req, res) => {
   const errorMsg = {
     message: 'Pessoa palestrante não encontrada',
